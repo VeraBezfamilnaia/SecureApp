@@ -1,29 +1,39 @@
 package com.bezf.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.security.RolesAllowed;
 
 @RestController
-@RequestMapping("/")
 public class MyController {
-    @GetMapping
+    @GetMapping("/")
     public String hello() {
         return "Hello, user!";
     }
 
-    @GetMapping("read")
+    @Secured({"ROLE_READ"})
+    @GetMapping("/read")
     public String read() {
-        return "You have authority for reading";
+        return "You have the read role";
     }
 
-    @GetMapping("write")
+    @RolesAllowed("ROLE_WRITE")
+    @GetMapping("/write")
     public String write() {
-        return "You have authority for writing";
+        return "You have the write role";
     }
 
-    @GetMapping("goodbye")
-    public String goodbye() {
-        return "Goodbye, user!";
+    @PreAuthorize("#username==authentication.principal.username")
+    @GetMapping("/goodbye")
+    public String goodbye(@RequestParam("username") String username) {
+        return "Goodbye, " + username;
+    }
+
+    @PreAuthorize("hasRole('WRITE') or hasRole('DELETE')")
+    @GetMapping("/delete")
+    public String delete() {
+        return "You have the delete role";
     }
 }
