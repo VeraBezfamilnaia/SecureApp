@@ -1,8 +1,8 @@
 # SecureApp
 
-## The purpose of the application
+## The purpose of the project
 
-The purpose of the application is practice in method level security using spring boot security starter
+The purpose of the project is to practice in securing an application using the Spring Boot Security starter
 
 ## Usage example
 
